@@ -1,4 +1,11 @@
-import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icons from "@expo/vector-icons/MaterialIcons";
@@ -23,6 +30,10 @@ declare module "react-native" {
   interface TouchableOpacityProps {
     className?: string;
   }
+
+  interface IconsProps {
+    className?: string;
+  }
 }
 
 const HomeScreen = () => {
@@ -31,6 +42,7 @@ const HomeScreen = () => {
     <ScrollView>
       <SafeAreaView className="mt-6">
         {/* Header */}
+
         <View className="px-6 flex flex-row items-center gap-2">
           <Image
             source={{
@@ -40,7 +52,7 @@ const HomeScreen = () => {
             resizeMode="cover"
           />
           <View className="flex">
-            <Text className="text-lg font-bold mb-2" numberOfLines={1}>
+            <Text className="text-lg font-bold mb-1" numberOfLines={1}>
               Olá Bruno 👋
             </Text>
             <Text className="opacity-75 text-xs mr-8">
@@ -64,7 +76,7 @@ const HomeScreen = () => {
 
         {/* Search */}
 
-        <View className="flex flex-row px-6 gap-3 mt-6">
+        <View className="flex flex-row px-6 gap-3 mt-6 mb-6">
           <TouchableOpacity
             style={{
               flex: 1,
@@ -84,7 +96,55 @@ const HomeScreen = () => {
               color={colors.text}
               style={{ opacity: 0.5 }}
             />
+            <Text className="flex text-base text-slate-400 opacity-50">
+              Busca
+            </Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{
+              width: 52,
+              aspectRatio: 1,
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 52,
+
+              backgroundColor: "#000",
+            }}
+          >
+            <Icons
+              name="tune"
+              size={24}
+              color={"#fff"}
+              className="text-white"
+            />
+          </TouchableOpacity>
+        </View>
+
+        {/* Collections */}
+
+        <View className="px-6">
+          <View className="flex flex-row items-center justify-between">
+            <Text className="text-xl font-bold">New Collections</Text>
+            <TouchableOpacity>
+              <Text>See All</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View className="flex flex-row gap-3">
+            <View
+              style={{
+                flex: 1,
+              }}
+            >
+              <Card />
+            </View>
+
+            <View style={{ flex: 1, gap: 12 }}>
+              <Card />
+              <Card />
+            </View>
+          </View>
         </View>
       </SafeAreaView>
     </ScrollView>
@@ -92,3 +152,29 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
+
+const Card = () => {
+  return (
+    <View
+      style={{
+        flex: 1,
+        height: 200,
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <Image
+        source={require("../assets/image-1.jpg")}
+        resizeMode="cover"
+        // style={StyleSheet.absoluteFill}
+        style={{
+          position: "absolute",
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+        }}
+      />
+    </View>
+  );
+};
