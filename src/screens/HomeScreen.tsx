@@ -4,12 +4,20 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  StyleSheet,
+  FlatList,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icons from "@expo/vector-icons/MaterialIcons";
 import { useTheme } from "@react-navigation/native";
+
+const CATEGORIES = [ 
+  "Clothing",
+  "Shoes",
+  "Acessories",
+  "T-Shirts",
+  "Sneakers",
+]
 
 const AVATAR_URL =
   "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80";
@@ -38,6 +46,7 @@ declare module "react-native" {
 
 const HomeScreen = () => {
   const { colors } = useTheme();
+  const [categoryIndex, setCategoryIndex] = useState(0);
   return (
     <ScrollView>
       <SafeAreaView className="mt-6">
@@ -53,7 +62,7 @@ const HomeScreen = () => {
           />
           <View className="flex">
             <Text className="text-lg font-bold mb-1" numberOfLines={1}>
-              Olá Bruno 👋
+              Hi Bruno 👋
             </Text>
             <Text className="opacity-75 text-xs mr-8">
               Discover fashion that suit your style
@@ -108,7 +117,6 @@ const HomeScreen = () => {
               alignItems: "center",
               justifyContent: "center",
               borderRadius: 52,
-
               backgroundColor: "#000",
             }}
           >
@@ -124,21 +132,16 @@ const HomeScreen = () => {
         {/* Collections */}
 
         <View className="px-6">
-          <View className="flex flex-row items-center justify-between">
+          <View className="flex flex-row items-center justify-between mb-3">
             <Text className="text-xl font-bold">New Collections</Text>
             <TouchableOpacity>
               <Text>See All</Text>
             </TouchableOpacity>
           </View>
 
-          <View className="flex flex-row gap-3">
-            <View
-              style={{
-                flex: 1,
-              }}
-            >
+          <View style={{flexDirection: "row", height: 200, gap: 12}}>
+            
               <Card />
-            </View>
 
             <View style={{ flex: 1, gap: 12 }}>
               <Card />
@@ -146,6 +149,36 @@ const HomeScreen = () => {
             </View>
           </View>
         </View>
+
+        {/* Categories */}
+
+        <FlatList data={CATEGORIES} horizontal showsHorizontalScrollIndicator={false} 
+        contentContainerStyle={{
+          paddingHorizontal: 16,
+          gap: 12,
+        }}
+        renderItem={({item, index}) => {
+        const isSelected = categoryIndex === index;
+        return ( 
+        <TouchableOpacity onPress={() => setCategoryIndex(index)} style={{
+          backgroundColor: isSelected ? colors.primary : colors.card,
+          paddingHorizontal: 24,
+          paddingVertical: 16,
+          borderRadius: 100,
+          borderWidth: isSelected ? 0 : 1,
+          borderColor: colors.border,
+          marginTop: 18
+        }}>
+          <Text style={{
+            color: isSelected ? colors.background : colors.text,
+            fontWeight: "600",
+            fontSize: 16,
+            opacity: isSelected ? 1 : 0.5
+          }}>{item}</Text>
+        </TouchableOpacity>
+        )}} 
+      />
+
       </SafeAreaView>
     </ScrollView>
   );
@@ -158,9 +191,9 @@ const Card = () => {
     <View
       style={{
         flex: 1,
-        height: 200,
         position: "relative",
         overflow: "hidden",
+        borderRadius: 24,
       }}
     >
       <Image
@@ -175,6 +208,10 @@ const Card = () => {
           left: 0,
         }}
       />
+
+      <View className="absolute left-4 top-4 px-4 py-3 bg-black opacity-25 rounded-full">
+        <Text className="text-white text-base font-medium">$130</Text>
+      </View>
     </View>
   );
 };
